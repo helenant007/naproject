@@ -1,6 +1,11 @@
 package model
 
-import "time"
+import (
+	"log"
+	"time"
+
+	"github.com/helenant007/naproject/utils/database"
+)
 
 type User struct {
 	ID          string
@@ -16,6 +21,27 @@ type User struct {
 // GetUsers : to get User data from DB
 func GetUsers() ([]*User, error) {
 	result := []*User{}
+	db := database.GetDB()
+
+	rows, err := db.Query(selectUsersQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		user := &User{}
+		err := rows.Scan(&user.ID, &user.Name, &user.MSISDN, &user.Email, &user.BirthDate, &user.CreatedTime, &user.UpdateTime)
+		if err != nil {
+			log.Fatal(err)
+		}
+		result = append(result, user)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
 
 	return result, nil
 }
