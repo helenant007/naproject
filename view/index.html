@@ -1,0 +1,43 @@
+{{ define "index" }}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NA Project by Helena</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>NA Project</h1>
+
+    <h2>Courses</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>MSISDN</th>
+            <th>Email</th>
+            <th>BirthDate</th>
+            <th>CreatedTime</th>
+            <th>UpdateTime</th>
+            <th>UserAge</th>
+        </tr>
+        {{ range $index, $value := . }}
+        <tr>
+            <td>{{ $value.ID }}</td>
+            <td>{{ $value.Name }}</td>
+            <td>{{ $value.MSISDN }}</td>
+            <td>{{ $value.Email }}</td>
+            <td>{{ $value.BirthDate }}</td>
+            <td>{{ $value.CreatedTime }}</td>
+            <td>{{ $value.UpdateTime }}</td>
+            <td>{{ $value.UserAge }}</td>
+        </tr>
+
+        {{ end }}
+    </table>
+</body>
+</html>
+{{ end }}

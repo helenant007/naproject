@@ -2,15 +2,16 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 
 	_ "github.com/lib/pq"
 
-	"github.com/helenant007/naproject/model"
+	"github.com/helenant007/naproject/handler"
 	"github.com/helenant007/naproject/utils/database"
+	"github.com/helenant007/naproject/utils/render"
 )
 
 func main() {
@@ -22,20 +23,15 @@ func main() {
 	}
 	database.Init(db)
 
-	http.HandleFunc("/", test)
+	// initialize template
+	tpl, err := template.ParseGlob("view/*.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	render.Init(tpl)
+
+	http.HandleFunc("/", handler.IndexHandler)
 
 	fmt.Println("SERVING...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func test(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello from Tokopedia Tower"))
-
-	users, err := model.GetUsers()
-	if err != nil {
-		fmt.Printf("Error %s", err.Error())
-	} else {
-		res2B, _ := json.Marshal(users)
-		fmt.Printf("%+v\n", string(res2B))
-	}
 }
