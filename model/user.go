@@ -35,6 +35,7 @@ func GetUsers() ([]*User, error) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		user.UserAge = int(time.Since(user.BirthDate).Hours() / (float64(24 * 365))) // count age manually
 		result = append(result, user)
 	}
 
