@@ -7,26 +7,17 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/garyburd/redigo/redis"
 	_ "github.com/lib/pq"
 
 	"github.com/helenant007/naproject/handler"
 	"github.com/helenant007/naproject/utils/database"
-	utilRedis "github.com/helenant007/naproject/utils/redis"
+	"github.com/helenant007/naproject/utils/nsq"
 	"github.com/helenant007/naproject/utils/render"
 )
 
 func main() {
-	visitorCount, err := redis.Int(utilRedis.GET("naproject:helen:visitorcount"))
-	if err != nil && err.Error() != "redigo: nil returned" {
-		log.Fatal(err)
-	}
-	fmt.Printf("FROM REDIS %d\n", visitorCount)
 
-	_, err = utilRedis.INCR("naproject:helen:visitorcount")
-	if err != nil {
-		log.Fatal(err)
-	}
+	nsq.InitConsumer()
 
 	// init database
 	connStr := "postgres://tkpdtraining:1tZCjrIcYeR1uQblQz0gBlIFU@devel-postgre.tkpd/tokopedia-user?sslmode=disable"
@@ -43,7 +34,7 @@ func main() {
 	}
 	render.Init(tpl)
 
-	http.HandleFunc("/", handler.IndexHandler)
+	http.HandleFunc("/index", handler.IndexHandler)
 
 	fmt.Println("SERVING...")
 	log.Fatal(http.ListenAndServe(":8080", nil))

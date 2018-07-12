@@ -7,12 +7,12 @@
     <title>NA Project by Helena</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="https://ecs7.tokopedia.net/img/og_image_default.jpg">
     <script src="main.js"></script>
 </head>
 <body>
     <h1>NA Project</h1>
-
-    <h2>Courses</h2>
+    <br>
     <table>
         <tr>
             <th>ID</th>
@@ -24,20 +24,30 @@
             <th>UpdateTime</th>
             <th>UserAge</th>
         </tr>
-        {{ range $index, $value := . }}
+        {{ range $index, $value := .Users }}
         <tr>
             <td>{{ $value.ID }}</td>
             <td>{{ $value.Name }}</td>
             <td>{{ $value.MSISDN }}</td>
             <td>{{ $value.Email }}</td>
-            <td>{{ $value.BirthDate }}</td>
-            <td>{{ $value.CreatedTime }}</td>
-            <td>{{ $value.UpdateTime }}</td>
+            <td>{{ $value.BirthDateString }}</td>
+            <td>{{ $value.CreatedTimeString }}</td>
+            <td>{{ $value.UpdateTimeString }}</td>
             <td>{{ $value.UserAge }}</td>
         </tr>
-
         {{ end }}
     </table>
+    <br><br>
+    <form method="GET">
+    <p>
+        Filter by Name:
+        <input type="text" name="filterName" placeholder="{{ .QueryParam }}">
+    </p>
+    </form>
+    <br><br>
+    <p>
+        Visitors Count: {{ .VisitorCount }}
+    </p>
 </body>
 </html>
 {{ end }}
