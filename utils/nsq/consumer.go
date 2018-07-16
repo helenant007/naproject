@@ -18,7 +18,7 @@ func InitConsumer() {
 			// increment redis
 			_, err := utilRedis.INCR("naproject:helen:visitorcount")
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 				return err
 			}
 		}
